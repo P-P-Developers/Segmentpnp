@@ -507,11 +507,9 @@ class Panel {
 
       var domain1 = "http://localhost:3000";
 
-      // if (domain == "http://localhost:3000" ) {
-      //     domain1 = "https://trade.pandpinfotech.com"
-      // } else {
+      
       domain1 = domain;
-      // }
+     
 
       const Panle_information = await panel_model
         .find({ domain: domain1 })

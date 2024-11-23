@@ -578,9 +578,7 @@ export async function UPDATE_FAQ_DATA(data) {
     
         try {
             const res = await axios.post(`${data.backend_rul}delete/license`, data, {
-            // const res = await axios.post(`http://localhost:7700/delete/license`, data,{
-    
-                // headers: header(token),
+          
                 data: {},
             })
             return await res?.data;

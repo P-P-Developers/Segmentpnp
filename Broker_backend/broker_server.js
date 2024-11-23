@@ -1434,7 +1434,13 @@ app.post('/broker-signals', async (req, res) => {
               exit_status: ExitStatus,
               ft_time: ft_time,
               users_id: uniqueUserIds ? uniqueUserIds : [],
-              instrumenttype: token[0].instrumenttype
+              instrumenttype: token[0].instrumenttype,
+
+              target: Target,
+              stop_loss: StopLoss,
+              exit_time: ExitTime,
+              exit_time1: 0,
+              sl_status: sl_status,
             }
 
             let Signal_req1 = new Signals(Signal_req)

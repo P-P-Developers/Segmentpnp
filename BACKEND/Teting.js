@@ -568,7 +568,6 @@ module.exports = function (app) {
           const filteredResults = all_panelsResult1.filter((url) =>
             url.includes("/backend/")
           );
-          console.log(filteredResults);
 
           let count = 0;
           if (filteredResults.length > 0) {
