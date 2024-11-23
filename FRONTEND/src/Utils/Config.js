@@ -1,5 +1,5 @@
-export const react_domain = `${window.location.origin}`;
-// export const react_domain = `https://software.reliablealgo.com`;
+// export const react_domain = `${window.location.origin}`;
+export const react_domain = `https://segment.pnpuniverse.com`;
 
 
 export const smartAlogUrl = `https://newpenal.pandpinfotech.com/backend/`;

@@ -37,6 +37,7 @@ import { useDispatch } from "react-redux";
 import { Get_Company_Logo } from "../../../ReduxStore/Slice/Admin/AdminSlice";
 import * as Config from "../../../Utils/Config";
 import { Get_Pmermission } from "../../../ReduxStore/Slice/Users/DashboardSlice";
+import { User_Profile } from "../../../ReduxStore/Slice/Common/commoSlice.js";
 
 const Sidebar = ({ ShowSidebar }) => {
   const location = useLocation();
@@ -49,7 +50,7 @@ const Sidebar = ({ ShowSidebar }) => {
   const goTouser_ID = JSON.parse(localStorage.getItem("user_details_goTo"));
   const [getPermissions, setGetPermissions] = useState([]);
   const [admin_permission, setAdmin_permission] = useState([]);
-  const [openmodal, setOpenmodal] = useState(false);
+  const [profileData, setProfileData] = useState(0);
 
   const data2 = async () => {
     if (roles === "SUBADMIN") {
@@ -94,6 +95,19 @@ const Sidebar = ({ ShowSidebar }) => {
           }
         });
     }
+    if (roles == "USER") {
+      const response = await dispatch(
+        User_Profile({
+          id: user_ID,
+          token: token,
+        })
+      ).unwrap();
+      console.log(response.data.apicreateinfo);
+      if (response.status) {
+        setProfileData(response.data.apicreateinfo);
+        // setProfileData(response.data);
+      }
+    }
   };
 
   const CompanyName = async () => {
@@ -124,7 +138,6 @@ const Sidebar = ({ ShowSidebar }) => {
     CompanyName();
   }, []);
 
-
   return (
     <div className="deznav ">
       <div className="deznav-scroll">
@@ -132,39 +145,51 @@ const Sidebar = ({ ShowSidebar }) => {
           {gotodashboard != null
             ? user_role_goTo === "USER"
               ? Client &&
-              Client.map((item,index) => {
-                const isActive = location.pathname.includes(item.route);
-            if(admin_permission.data?.length > 0 && admin_permission.data[0]?.Plans == 0 && item.name === "Plans"){
-              return null;
-            }
-                return (
-                    <React.Fragment key={"USER"+index}>
-                        {item.Data.length > 0 ? (
-                            <li className={isActive ? "mm-active" : ""}>
-                                <a className="has-arrow">
-                                    <IconComponent icon={item.Icon} className="mx-2" />
-                                    <span className="nav-text">{item.name}</span>
-                                </a>
-                                <ul aria-expanded="false">
-                                    {item.Data.map((nested_item) => (
-                                        <li key={nested_item.id} className={location.pathname.includes(nested_item.route) ? "mm-active" : ""}>
-                                            <Link to={nested_item.route}>{nested_item.name}</Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                        ) : (
-                            <li className={isActive ? "mm-active" : ""}>
-                                <Link to={item.route}>
-                                    <IconComponent icon={item.Icon} />
-                                    <span className="nav-text mx-2">{item.name}</span>
+                Client.map((item, index) => {
+                  const isActive = location.pathname.includes(item.route);
+                  if (
+                    admin_permission.data?.length > 0 &&
+                    admin_permission.data[0]?.Plans == 0 &&
+                    item.name === "Plans"
+                  ) {
+                    return null;
+                  }
+                  return (
+                    <React.Fragment key={"USER" + index}>
+                      {item.Data.length > 0 ? (
+                        <li className={isActive ? "mm-active" : ""}>
+                          <a className="has-arrow">
+                            <IconComponent icon={item.Icon} className="mx-2" />
+                            <span className="nav-text">{item.name}</span>
+                          </a>
+                          <ul aria-expanded="false">
+                            {item.Data.map((nested_item) => (
+                              <li
+                                key={nested_item.id}
+                                className={
+                                  location.pathname.includes(nested_item.route)
+                                    ? "mm-active"
+                                    : ""
+                                }
+                              >
+                                <Link to={nested_item.route}>
+                                  {nested_item.name}
                                 </Link>
-                            </li>
-                        )}
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ) : (
+                        <li className={isActive ? "mm-active" : ""}>
+                          <Link to={item.route}>
+                            <IconComponent icon={item.Icon} />
+                            <span className="nav-text mx-2">{item.name}</span>
+                          </Link>
+                        </li>
+                      )}
                     </React.Fragment>
-                );
-            })
-            
+                  );
+                })
               : user_role_goTo === "SUBADMIN"
               ? sub_admin_sidebar &&
                 sub_admin_sidebar.map((item) => {
@@ -226,8 +251,7 @@ const Sidebar = ({ ShowSidebar }) => {
                 if (
                   (item.id === 9 || item.name === "Make Strategy") &&
                   admin_permission.data &&
-                  admin_permission.data[0].Create_Strategy === 0 
-                
+                  admin_permission.data[0].Create_Strategy === 0
                 ) {
                 } else {
                   return (
@@ -258,7 +282,7 @@ const Sidebar = ({ ShowSidebar }) => {
                           <>
                             <ul aria-expanded="false" className="mm-collapse">
                               {item.Data.length > 0
-                                ? item.Data.map((nested_item,index) => {
+                                ? item.Data.map((nested_item, index) => {
                                     if (
                                       (nested_item.route ==
                                         "/admin/createstrategy" &&
@@ -601,10 +625,18 @@ const Sidebar = ({ ShowSidebar }) => {
             : roles === "USER"
             ? Client &&
               Client.map((item) => {
-             
                 if (
-                  admin_permission.data &&  admin_permission.data[0].Plans == 0 &&
+                  admin_permission.data &&
+                  admin_permission.data[0].Plans == 0 &&
                   item.name === "Plans"
+                ) {
+                  return null;
+                }
+
+                if (
+                  profileData &&
+                  profileData == 0 &&
+                  item.name === "Api Create Info"
                 ) {
                   return null;
                 }
@@ -704,7 +736,6 @@ const Sidebar = ({ ShowSidebar }) => {
     </div>
   );
 };
-
 
 const IconComponent = ({ icon }) => {
   const renderIcon = () => {

@@ -55,6 +55,7 @@ class Employee {
         demat_userid,
         group_service,
         multiple_strategy_select,
+        apicreateinfo,
         plan_id
       } = req.body;
 
@@ -270,6 +271,7 @@ class Employee {
           demat_userid: demat_userid,
           service_given_month: service_given_month,
           multiple_strategy_select: multiple_strategy_select,
+          apicreateinfo: apicreateinfo,
           plan_id:plan_id
         },
         // Add more documents if needed
@@ -500,9 +502,6 @@ class Employee {
         new_licence = req.licence1;
       }
 
-      console.log("new_licence", new_licence);
-      console.log("TotalLicense", TotalLicense);
-      console.log("Panel_key[0].licenses", Panel_key[0].licenses);
 
 
       if (Number(new_licence) > 0) {
@@ -872,6 +871,8 @@ class Employee {
         demat_userid: req.demat_userid,
         service_given_month: req.service_given_month,
         multiple_strategy_select: req.multiple_strategy_select,
+        apicreateinfo: req.apicreateinfo,
+
         Is_Active: "1",
         plan_id:req.plan_id
       };
@@ -1606,6 +1607,7 @@ class Employee {
             demat_userid: 1,
             broker: 1,
             multiple_strategy_select: 1,
+            apicreateinfo:1,
             plan_id:1
           },
         },

@@ -201,6 +201,10 @@ const userModel = Schema({
         trim: true,
         default: '0'
     },
+    apicreateinfo: {
+        type: String,
+        default: '0'
+    },
     oneTimeToken: {
         type: String,
         default: null

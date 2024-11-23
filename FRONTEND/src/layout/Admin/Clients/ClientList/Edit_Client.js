@@ -144,6 +144,8 @@ const EditClient = () => {
       Strategy: false,
       licence1: "null",
       multiple_strategy_select: false,
+      apicreateinfo: false,
+
       network_ip: ip,
     },
 
@@ -242,6 +244,8 @@ const EditClient = () => {
         device: check_Device(),
         multiple_strategy_select:
           values.multiple_strategy_select === false ? "0" : "1",
+          apicreateinfo:
+          values.apicreateinfo === false ? "0" : "1",
         network_ip: ip,
         plan_id: selectedPlan,
       };
@@ -667,6 +671,15 @@ const EditClient = () => {
       disable: false,
       check_box_true: formik.values.multiple_strategy_select ? true : false,
     },
+    {
+      name: "apicreateinfo",
+      label: "Api Create Info",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      check_box_true: formik.values.apicreateinfo ? true : false,
+    },
   ];
 
   useEffect(() => {
@@ -946,6 +959,10 @@ const EditClient = () => {
       formik.setFieldValue(
         "multiple_strategy_select",
         userData.multiple_strategy_select == "1"
+      );
+      formik.setFieldValue(
+        "apicreateinfo",
+        userData.apicreateinfo == "1"
       );
       formik.setFieldValue("plan_id", userData.plan_id);
     }

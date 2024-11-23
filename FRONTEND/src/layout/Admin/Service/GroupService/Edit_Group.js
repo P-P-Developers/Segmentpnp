@@ -42,7 +42,7 @@ const AddStrategy = () => {
   const [stockDiseble, setStockDiseble] = useState(false);
 
   const excludedKeywords = [
-    "CASH#",
+    "EQ",
     "OPTIDX",
     "OPTSTK",
     "FUTIDX",
@@ -370,7 +370,7 @@ const AddStrategy = () => {
             const filteredData1 = response.data.filter((item) => {
               if (item.category.segment == formik.values.segment) {
                 return (
-                  item.name.includes("CASH#") ||
+                  item.name == "EQ" ||
                   item.name.includes("OPTIDX") ||
                   item.name.includes("OPTSTK") ||
                   item.name.includes("FUTIDX") ||
@@ -422,7 +422,7 @@ const AddStrategy = () => {
       var Status =
         selectedServices.filter((item) => {
           if (item.segment == "CASH") {
-            return item.segment == "CASH" && item.name != "CASH#";
+            return item.segment == "CASH" && item.name != "EQ";
           }
         }).length > 0;
       return Status;
@@ -490,7 +490,7 @@ const AddStrategy = () => {
       var Status =
         selectedServices.filter((item) => {
           if (item.segment == "CASH") {
-            return item.segment == "CASH" && item.name == "CASH#";
+            return item.segment == "CASH" && item.name == "EQ";
           }
         }).length > 0;
       return Status;
@@ -723,7 +723,7 @@ const AddStrategy = () => {
                   </div>
                 )}
 
-                {state.length > 0 && (
+                {/* {state.length > 0 && (
                   <div className="mb-3 row">
                     <div className="col-lg-12">
                       <div className="row mt-4">
@@ -769,7 +769,7 @@ const AddStrategy = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </>
           }

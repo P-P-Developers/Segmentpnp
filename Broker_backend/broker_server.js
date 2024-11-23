@@ -492,7 +492,7 @@ app.post('/broker-signals', async (req, res) => {
             token = await Alice_token.find(instrument_query).maxTimeMS(20000).exec();
           }
            
-          console.log("token ",token.instrumenttype)
+          console.log("token ",token)
           var instrument_token = 0
           if (token.length == 0) {
             instrument_token = 0
@@ -581,11 +581,12 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
+
           if (process.env.PANEL_KEY == client_key) {
 
             try {
               const AliceBlueCollection = db1.collection('aliceblueView');
-              const AliceBluedocuments = await AliceBlueCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
+              const AliceBluedocuments = await AliceBlueCollection.find({ "strategys.strategy_name": strategy, "service1.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
 
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + AliceBluedocuments.length + '\n', function (err) {
@@ -605,13 +606,15 @@ app.post('/broker-signals', async (req, res) => {
             }
             //End Process Alice Blue admin client
 
+            
 
             //Process Angel admin client
             try {
               const angelCollection = db1.collection('angelView');
-              const angelBluedocuments = await angelCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
+              const angelBluedocuments = await angelCollection.find({ "strategys.strategy_name": strategy, "service1.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
 
-              fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + angelBluedocuments.length + '\n', function (err) {
+              console.log("angelBluedocuments", angelBluedocuments)
+              fs.appendFile(filePath, 'TIME ' + new Date() + ' ANGEL ALL CLIENT LENGTH ' + angelBluedocuments.length + '\n', function (err) {
                 if (err) {
                   return console.log(err);
                 }
@@ -634,7 +637,7 @@ app.post('/broker-signals', async (req, res) => {
               const fivepaisaCollection = db1.collection('fivepaisaView');
               const fivepaisaBluedocuments = await fivepaisaCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
 
-              fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + fivepaisaBluedocuments.length + '\n', function (err) {
+              fs.appendFile(filePath, 'TIME ' + new Date() + ' FIVE PAISA ALL CLIENT LENGTH ' + fivepaisaBluedocuments.length + '\n', function (err) {
                 if (err) {
                   return console.log(err);
                 }
@@ -658,7 +661,7 @@ app.post('/broker-signals', async (req, res) => {
               const zerodhaCollection = db1.collection('zerodhaView');
               const zerodhaBluedocuments = await zerodhaCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
 
-              fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + zerodhaBluedocuments.length + '\n', function (err) {
+              fs.appendFile(filePath, 'TIME ' + new Date() + ' ZERODHA ALL CLIENT LENGTH ' + zerodhaBluedocuments.length + '\n', function (err) {
                 if (err) {
                   return console.log(err);
                 }
@@ -830,7 +833,7 @@ app.post('/broker-signals', async (req, res) => {
             //Process kotakneo admin client
             try {
               const kotakneoCollection = db1.collection('kotakneoView');
-              const kotakneodocuments = await kotakneoCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
+              const kotakneodocuments = await kotakneoCollection.find({ "strategys.strategy_name": strategy, "service1.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
 
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' kotakneo ALL CLIENT LENGTH ' + kotakneodocuments.length + '\n', function (err) {
@@ -1336,7 +1339,7 @@ app.post('/broker-signals', async (req, res) => {
               const ShoonyaCollection = db1.collection('shoonyaView');
               const shoonyadocuments = await ShoonyaCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, client_key: client_key, web_url: "2" }).toArray();
 
-              fs.appendFile(filePath, 'TIME ' + new Date() + ' icicidirect TRADING VIEW CLIENT LENGTH ' + Icicidirectdocuments.length + '\n', function (err) {
+              fs.appendFile(filePath, 'TIME ' + new Date() + ' icicidirect TRADING VIEW CLIENT LENGTH ' + shoonyadocuments.length + '\n', function (err) {
                 if (err) {
                   return console.log(err);
                 }

@@ -62,7 +62,7 @@ export const admin_sidebar = [
         Data: [
             {
                 id: 41,
-                name: 'Signals',
+                name: 'Trade Call',
                 route: '/admin/signals',
             },
             {
@@ -325,14 +325,14 @@ export const Client = [
         Data: [
             {
                 id: 1000,
-                name: 'Signals',
+                name: 'Trade Call',
                 Icon: 'Signal',
                 route: '/client/signals',
                 Data: []
             },
             {
                 id: 1001,
-                name: 'Trade History',
+                name: 'Order History',
                 Icon: 'FolderClock',
                 route: '/client/tradehistory',
                 Data: []

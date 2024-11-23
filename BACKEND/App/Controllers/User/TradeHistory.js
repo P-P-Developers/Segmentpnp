@@ -372,8 +372,10 @@ class TradeHistory {
 
       const GetAllClientServices = await client_services.aggregate(pipeline);
 
-
-      if (GetAllClientServices[0].allProcessedSignals.flat().length > 0) {
+      console.log(GetAllClientServices);
+      if(GetAllClientServices.length === 0) {
+        return res.send({ status: false, data: [], msg: "Data Empty" });
+      }else if (GetAllClientServices[0]?.allProcessedSignals.flat().length > 0) {
         const sortedAndFilteredArray =
           GetAllClientServices[0].allProcessedSignals
             .flat()

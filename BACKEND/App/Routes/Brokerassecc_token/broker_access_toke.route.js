@@ -109,6 +109,7 @@ const {
 const {
   GetAccessTokenIcicidirect,
   GetOrderFullInformationIcicidirect,
+  SingleOrderFullInformationIcicidirect
 } = require("../../Controllers/Brokerassecc_token/Icicidirect");
 
 const {
@@ -320,7 +321,24 @@ const GetOrderFullInformationAll_broker = async (req, res) => {
         });
       }
     } else if (broker == 25) {
-      GetOrderFullInformationIcicidirect(req, res, result);
+      let broker_response_id = req.body.broker_response_id;
+      let order_id = req.body.order_id;
+
+      if (order_id != "" && order_id != undefined) {
+        SingleOrderFullInformationIcicidirect(
+          req,
+          res,
+          result,
+          broker_response_id,
+          order_id
+        );
+      } else {
+        return res.send({
+          status: false,
+          msg: "Please Fill All Feild",
+          data: [],
+        });
+      }
     } else if (broker == 26) {
       let broker_response_id = req.body.broker_response_id;
       let order_id = req.body.order_id;
@@ -367,7 +385,7 @@ const GetOrderFullInformationAll_broker = async (req, res) => {
       return res.send({ status: false, msg: "broker not found" });
     }
   } else {
- 
+    //console.log("User Not found")
     return res.send({ status: false, msg: "User Not found" });
   }
 };

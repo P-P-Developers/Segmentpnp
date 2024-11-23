@@ -37,8 +37,6 @@ const Login = () => {
   const [typeOtp1, setTypeOtp1] = useState("");
   const [UserData, setUserData] = useState("");
   const [signInBtn, setSignInBtn] = useState(false);
-
-
   const [ip, setIp] = useState('');
 
   useEffect(() => {
@@ -46,7 +44,6 @@ const Login = () => {
       setIp(response.data.ip)
     })
   }, []);
-
 
   let SetTheme = async () => {
     const req = {
@@ -151,7 +148,6 @@ const Login = () => {
       });
   }
 
-  //  FOR SET COMPANY LOGO
   const CompanyName = async () => {
     await dispatch(Get_Company_Logo()).unwrap()
       .then((response) => {
@@ -178,7 +174,6 @@ const Login = () => {
         return;
       });
   }
-
 
   const isValidEmail = (email) => {
     return Email_regex(email);
@@ -258,8 +253,6 @@ const Login = () => {
 
   ];
 
-
-  // ------------------ For Otp Varify --------------------------
 
   const verifyOTP = async () => {
     setSignInBtn(true);
@@ -461,7 +454,6 @@ const Login = () => {
   };
 
 
-
   const SubmitDesclimer = () => {
 
     if (!CheckDesclaimer) {
@@ -500,7 +492,6 @@ const Login = () => {
       }
     }
   }
-
 
 
 
