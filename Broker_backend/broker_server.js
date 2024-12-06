@@ -683,7 +683,7 @@ app.post('/broker-signals', async (req, res) => {
             //Process UPSTOX admin client
             try {
               const upstoxCollection = db1.collection('upstoxView');
-              const upstoxdocuments = await upstoxCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
+              const upstoxdocuments = await upstoxCollection.find({ "strategys.strategy_name": strategy, "service1.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
 
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' UPSTOX ALL CLIENT LENGTH ' + upstoxdocuments.length + '\n', function (err) {

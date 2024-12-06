@@ -51,6 +51,9 @@ cron.schedule("10 1 * * *", () => {
 cron.schedule("*/15 * * * *", () => {
   GetStrickPriceFromSheet();
 });
+// cron.schedule("* * * * *", () => {
+//   GetStrickPriceFromSheet();
+// });
 
 cron.schedule("50 23 * * *", () => {
   twodaysclient();
@@ -1625,6 +1628,7 @@ const GetStrickPriceFromSheet = async () => {
                 data.CPrice != "" &&
                 data.CPrice != "#N/A"
               ) {
+
                 const result = await Get_Option_Chain_modal.updateOne(
                   { symbol: data.SYMBOL },
                   { $set: { price: data.CPrice } },

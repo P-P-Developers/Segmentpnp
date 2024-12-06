@@ -585,7 +585,7 @@ const AddStrategy = () => {
                   <th>Segment</th>
                   <th>Service Name</th>
                   <th>lotsize</th>
-                  <th>Qty</th>
+                  <th>Lot </th>
                   <th>Product Type</th>
                   <th>Remove</th>
                 </tr>
@@ -605,7 +605,7 @@ const AddStrategy = () => {
                             <input
                               type="number"
                               className="form-control col-md-2"
-                              placeholder="Enter Qty"
+                              placeholder="Enter Lot"
                               onChange={(e) =>
                                 InputGroupQty(
                                   e,

@@ -67,14 +67,14 @@ export const admin_sidebar = [
             },
             {
                 id: 42,
-                name: 'Trade History',
+                name: 'Order History',
                 route: '/admin/tradehistory?type=admin',
             },
-            {
-                id: 42,
-                name: 'Order History',
-                route: '/admin/tradehistory1?type=admin',
-            },
+            // {
+            //     id: 42,
+            //     name: 'Order History',
+            //     route: '/admin/tradehistory1?type=admin',
+            // },
             {
                 id: 43,
                 name: 'Client Trade',
@@ -275,7 +275,7 @@ export const supper_admin_sidebar = [
 export const sub_admin_sidebar = [
     {
         id: 1,
-        name: 'Signals',
+        name: 'Trade call',
         Icon: 'Signal',
         route: '/subadmin/signals',
         Data: []
@@ -289,7 +289,7 @@ export const sub_admin_sidebar = [
     },
     {
         id: 3,
-        name: 'Trade History',
+        name: 'Order History',
         Icon: 'CandlestickChart',
         route: '/subadmin/tradehistory',
         Data: []
@@ -339,20 +339,7 @@ export const Client = [
             },
         ]
     },
-    // {
-    //     id: 2,
-    //     name: 'Signals',
-    //     Icon: 'Signal',
-    //     route: '/client/signals',
-    //     Data: []
-    // },
-    // {
-    //     id: 3,
-    //     name: 'Trade History',
-    //     Icon: 'FolderClock',
-    //     route: '/client/tradehistory',
-    //     Data: []
-    // },
+
 
     {
         id: 4,

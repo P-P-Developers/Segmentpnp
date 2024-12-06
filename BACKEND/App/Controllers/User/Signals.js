@@ -133,7 +133,6 @@ class Signals {
 
                 GetAllClientServices = await client_services.aggregate(pipeline);
 
-                console.log("GetAllClientServices", GetAllClientServices.length);
 
                 if (GetAllClientServices.length > 0 && GetAllClientServices[0].allSignals.flat().length > 0) {
                     const sortedAndFilteredArray = GetAllClientServices[0].allSignals

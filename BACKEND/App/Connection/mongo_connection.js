@@ -1,25 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const db_connect = process.env.MONGO_URI;
-
-// mongoose.connect(db_connect, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   dbName: process.env.DB_NAME,
-//   serverSelectionTimeoutMS: 50000, // 50 seconds
-//   socketTimeoutMS: 45000, // 45 seconds for I/O operations
-//   connectTimeoutMS: 30000, // 30 seconds to establish a connection
-// });
-
-// const connection = mongoose.connection;
-
-// connection.on("error", (error) => {
-
-// });
-
-// connection.once("open", () => {
-
-// });
 
 const mongoose = require("mongoose");
 
@@ -30,11 +8,12 @@ const connectToMongoDB =  () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       dbName: process.env.DB_NAME,
-      serverSelectionTimeoutMS: 50000, // 50 seconds
-      socketTimeoutMS: 45000, // 45 seconds for I/O operations
-      connectTimeoutMS: 30000, // 30 seconds to establish a connection
+      serverSelectionTimeoutMS: 50000, 
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 30000, 
     });
 
+    
     const connection = mongoose.connection;
 
     connection.on("error", (error) => {
@@ -50,3 +29,4 @@ const connectToMongoDB =  () => {
 };
 
 module.exports = {connectToMongoDB};
+// mongodb://segmentpnp:Taw%26k5RT56%267GsRy%26n@5.178.98.2:15497/

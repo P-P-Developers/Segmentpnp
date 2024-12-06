@@ -144,18 +144,19 @@ class TradeHistory {
                   sq_value: "$$signal.sq_value",
                   qty_percent: {
                     $divide: [
-                      { 
+                      {
                         $multiply: [
-                          { $toDouble: { $ifNull: ["$$signal.qty_percent", 1] } }, 
-                          { $toDouble: { $ifNull: ["$$signal.lot_size", 1] } },  
+                          {
+                            $toDouble: { $ifNull: ["$$signal.qty_percent", 1] },
+                          },
+                          { $toDouble: { $ifNull: ["$$signal.lot_size", 1] } },
 
-                          { $toDouble: "$quantity" }
-                        ]
+                          { $toDouble: "$quantity" },
+                        ],
                       },
-                      100  
-                    ]
+                      100,
+                    ],
                   },
-                  
 
                   tsl: "$$signal.tsl",
                   tr_price: "$$signal.tr_price",
@@ -203,17 +204,15 @@ class TradeHistory {
                   entry_qty: {
                     $multiply: [
                       { $toDouble: { $ifNull: ["$$signal.entry_qty", 0] } },
-                    { $toDouble: { $ifNull: ["$$signal.entry_qty", 0] } }, 
-                     { $toDouble: { $ifNull: ["$$signal.lot_size", 1] } }
-
+                      { $toDouble: { $ifNull: ["$$signal.entry_qty", 0] } },
+                      { $toDouble: { $ifNull: ["$$signal.lot_size", 1] } },
                     ],
                   },
                   exit_qty: {
                     $multiply: [
                       { $toDouble: { $ifNull: ["$$signal.exit_qty", 0] } },
                       { $toDouble: { $ifNull: ["$$signal.exit_qty", 0] } },
-                     { $toDouble: { $ifNull: ["$$signal.lot_size", 1] } }
-
+                      { $toDouble: { $ifNull: ["$$signal.lot_size", 1] } },
                     ],
                   },
                   entry_qty_percent: {
@@ -353,13 +352,13 @@ class TradeHistory {
         },
         {
           $match: {
-            processedSignals: { $ne: [] }, 
+            processedSignals: { $ne: [] },
           },
         },
         {
           $group: {
             _id: null,
-            allProcessedSignals: { $push: "$processedSignals" }, 
+            allProcessedSignals: { $push: "$processedSignals" },
           },
         },
         {
@@ -372,15 +371,15 @@ class TradeHistory {
 
       const GetAllClientServices = await client_services.aggregate(pipeline);
 
-      console.log(GetAllClientServices);
-      if(GetAllClientServices.length === 0) {
+      if (GetAllClientServices.length === 0) {
         return res.send({ status: false, data: [], msg: "Data Empty" });
-      }else if (GetAllClientServices[0]?.allProcessedSignals.flat().length > 0) {
+      } else if (
+        GetAllClientServices[0]?.allProcessedSignals.flat().length > 0
+      ) {
         const sortedAndFilteredArray =
           GetAllClientServices[0].allProcessedSignals
             .flat()
             .sort((a, b) => b.createdAt - a.createdAt);
-
 
         var trade_symbols_filter =
           sortedAndFilteredArray.length > 0
