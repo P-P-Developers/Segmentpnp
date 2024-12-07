@@ -901,8 +901,9 @@ const TradeHistory = () => {
   const forCSVdata = () => {
     let csvArr = [];
     if (tradeHistoryData.data.length > 0) {
-      tradeHistoryData.data.map((item) => {
+      tradeHistoryData.data.map((item,index) => {
         return csvArr.push({
+          id: item.index+1,
           symbol: item.trade_symbol,
           EntryType: item.entry_type ? item.entry_type : "-",
           ExitType: item.exit_type ? item.exit_type : "-",
@@ -914,9 +915,7 @@ const TradeHistory = () => {
           "Exit Time": item.exit_dt_date,
           Exchange: item.exchange,
           Strategy: item.strategy,
-          "Released-P/L": $(".show_rpl_" + item.token).html(),
-          "Unreleased-P/L": $(".UPL_" + item.token),
-          "Total-PL": $(".TPL_" + item.token),
+          
         });
       });
 

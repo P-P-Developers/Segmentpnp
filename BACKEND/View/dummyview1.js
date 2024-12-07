@@ -854,283 +854,283 @@ db.createView("kotakneoView", "users", [
 // ==========================================================================================================================================================
 // ==========================================================================================================================================================
 // ==========================================================================================================================================================
-  db.createView("upstoxView", "users", [
-    {
-      $match: {
-        broker: "19",
-        TradingStatus: "on", // Condition from the user collection
-        $or: [
-          { EndDate: { $gte: new Date() } }, // EndDate is today or in the future
-          { EndDate: null }, // EndDate is not set
-        ],
-      },
-    },
-    {
-      $lookup: {
-        from: "client_services",
-        localField: "_id", // Field from the user collection to match
-        foreignField: "user_id", // Field from the client_services collection to match
-        as: "client_services",
-      },
-    },
-    {
-      $unwind: "$client_services",
-    },
-    {
-      $match: {
-        "client_services.active_status": "1",
-      },
-    },
-    {
-      $lookup: {
-        from: "services",
-        localField: "client_services.service_id",
-        foreignField: "_id",
-        as: "service",
-      },
-    },
-    {
-      $unwind: "$service",
-    },
-    {
-      $lookup: {
-        from: "services",
-        localField: "service.name",
-        foreignField: "instrumenttype",
-        as: "service1",
-      },
-    },
-    {
-      $unwind: "$service1",
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "service.categorie_id",
-        foreignField: "_id",
-        as: "category",
-      },
-    },
-    {
-      $unwind: "$category",
-    },
-    {
-      $lookup: {
-        from: "strategies",
-        localField: "client_services.strategy_id",
-        foreignField: "_id",
-        as: "strategys",
-      },
-    },
-    {
-      $unwind: "$strategys",
-    },
-    {
-      $addFields: {
-        cleanName: {
-          $cond: {
-            if: { $regexMatch: { input: "$service1.name", regex: /#/ } },
-            then: { $arrayElemAt: [{ $split: ["$service1.name", "#"] }, 0] },
-            else: "$service1.name",
-          },
-        },
-      },
-    },
-    {
-      $lookup: {
-        from: "option_chain_symbols",
-        let: { cleanName: "$cleanName" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $or: [
-                  { $eq: ["$symbol", "$$cleanName"] },
-                  { $eq: ["$symbol", { $concat: ["NSE:", "$$cleanName"] }] },
-                ],
-              },
-            },
-          },
-        ],
-        as: "StockPrice",
-      },
-    },
-    {
-      $unwind: {
-        path: "$StockPrice",
-        preserveNullAndEmptyArrays: true, // Optional: Set to false if you want to exclude non-matches
-      },
-    },
-    {
-      $addFields: {
-        extractedPrice: {
-          $cond: {
-            if: { $regexMatch: { input: { $toString: "$StockPrice.price" }, regex: "\\." } }, // Check if the value contains a decimal point
-            then: {
-              $floor: { $toDouble: "$StockPrice.price" }, // Remove decimal part if present
-            },
-            else: {
-              $add: [{ $toDouble: "$StockPrice.price" }, 1], // Add 1 if no decimal part
-            },
-          },
-        },
-      },
-    },
+  // db.createView("upstoxView", "users", [
+  //   {
+  //     $match: {
+  //       broker: "19",
+  //       TradingStatus: "on", // Condition from the user collection
+  //       $or: [
+  //         { EndDate: { $gte: new Date() } }, // EndDate is today or in the future
+  //         { EndDate: null }, // EndDate is not set
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "client_services",
+  //       localField: "_id", // Field from the user collection to match
+  //       foreignField: "user_id", // Field from the client_services collection to match
+  //       as: "client_services",
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$client_services",
+  //   },
+  //   {
+  //     $match: {
+  //       "client_services.active_status": "1",
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "services",
+  //       localField: "client_services.service_id",
+  //       foreignField: "_id",
+  //       as: "service",
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$service",
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "services",
+  //       localField: "service.name",
+  //       foreignField: "instrumenttype",
+  //       as: "service1",
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$service1",
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "categories",
+  //       localField: "service.categorie_id",
+  //       foreignField: "_id",
+  //       as: "category",
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$category",
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "strategies",
+  //       localField: "client_services.strategy_id",
+  //       foreignField: "_id",
+  //       as: "strategys",
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$strategys",
+  //   },
+  //   {
+  //     $addFields: {
+  //       cleanName: {
+  //         $cond: {
+  //           if: { $regexMatch: { input: "$service1.name", regex: /#/ } },
+  //           then: { $arrayElemAt: [{ $split: ["$service1.name", "#"] }, 0] },
+  //           else: "$service1.name",
+  //         },
+  //       },
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "option_chain_symbols",
+  //       let: { cleanName: "$cleanName" },
+  //       pipeline: [
+  //         {
+  //           $match: {
+  //             $expr: {
+  //               $or: [
+  //                 { $eq: ["$symbol", "$$cleanName"] },
+  //                 { $eq: ["$symbol", { $concat: ["NSE:", "$$cleanName"] }] },
+  //               ],
+  //             },
+  //           },
+  //         },
+  //       ],
+  //       as: "StockPrice",
+  //     },
+  //   },
+  //   {
+  //     $unwind: {
+  //       path: "$StockPrice",
+  //       preserveNullAndEmptyArrays: true, // Optional: Set to false if you want to exclude non-matches
+  //     },
+  //   },
+  //   {
+  //     $addFields: {
+  //       extractedPrice: {
+  //         $cond: {
+  //           if: { $regexMatch: { input: { $toString: "$StockPrice.price" }, regex: "\\." } }, // Check if the value contains a decimal point
+  //           then: {
+  //             $floor: { $toDouble: "$StockPrice.price" }, // Remove decimal part if present
+  //           },
+  //           else: {
+  //             $add: [{ $toDouble: "$StockPrice.price" }, 1], // Add 1 if no decimal part
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
 
-    {
-      $project: {
-        client_services: 1,
-        "service.name": 1,
-        "service.instrument_token": 1,
-        "service.exch_seg": 1,
-        "strategys.strategy_name": 1,
-        "category.segment": 1,
-        "service.zebu_token": 1,
-        "extractedPrice": 1,
-        _id: 1,
-        service1: 1,
-        FullName: 1,
-        UserName: 1,
-        Email: 1,
-        EndDate: 1,
-        ActiveStatus: 1,
-        TradingStatus: 1,
-        access_token: 1,
-        api_secret: 1,
-        app_id: 1,
-        client_code: 1,
-        api_key: 1,
-        app_key: 1,
-        api_type: 1,
-        demat_userid: 1,
-        client_key: 1,
-        web_url: 1,
-        fund_value: 1,
-        fund_type: 1,
-      },
-    },
-    {
-      $addFields: {
-        postdata: {
-          //quantity: "$client_services.quantity",
-          // quantity: { "$toInt": "$client_services.quantity" },
-          quantity: {
-            $cond: {
-              if: { $eq: ["$fund_type", "stock"] },
-              then: "$client_services.quantity",
-              else: {
-                $cond: {
-                  if: { $eq: ["$fund_type", "fund"] },
-                  then: {
-                    $floor: {
-                      $divide: [
-                        { $convert: { input: "$fund_value", to: "double", onError: 1, onNull: 1 } },
-                        "$extractedPrice"
-                      ], 
-                    },
-                  },
-                  else: "$client_services.lot_size", 
-                },
-              },
-            },
-          },
+  //   {
+  //     $project: {
+  //       client_services: 1,
+  //       "service.name": 1,
+  //       "service.instrument_token": 1,
+  //       "service.exch_seg": 1,
+  //       "strategys.strategy_name": 1,
+  //       "category.segment": 1,
+  //       "service.zebu_token": 1,
+  //       "extractedPrice": 1,
+  //       _id: 1,
+  //       service1: 1,
+  //       FullName: 1,
+  //       UserName: 1,
+  //       Email: 1,
+  //       EndDate: 1,
+  //       ActiveStatus: 1,
+  //       TradingStatus: 1,
+  //       access_token: 1,
+  //       api_secret: 1,
+  //       app_id: 1,
+  //       client_code: 1,
+  //       api_key: 1,
+  //       app_key: 1,
+  //       api_type: 1,
+  //       demat_userid: 1,
+  //       client_key: 1,
+  //       web_url: 1,
+  //       fund_value: 1,
+  //       fund_type: 1,
+  //     },
+  //   },
+  //   {
+  //     $addFields: {
+  //       postdata: {
+  //         //quantity: "$client_services.quantity",
+  //         // quantity: { "$toInt": "$client_services.quantity" },
+  //         quantity: {
+  //           $cond: {
+  //             if: { $eq: ["$fund_type", "stock"] },
+  //             then: "$client_services.quantity",
+  //             else: {
+  //               $cond: {
+  //                 if: { $eq: ["$fund_type", "fund"] },
+  //                 then: {
+  //                   $floor: {
+  //                     $divide: [
+  //                       { $convert: { input: "$fund_value", to: "double", onError: 1, onNull: 1 } },
+  //                       "$extractedPrice"
+  //                     ], 
+  //                   },
+  //                 },
+  //                 else: "$client_services.lot_size", 
+  //               },
+  //             },
+  //           },
+  //         },
 
-          product: {
-            $cond: {
-              if: {
-                $and: [
-                  { $eq: ["$client_services.product_type", "1"] },
-                  {
-                    $or: [
-                      { $eq: ["$category.segment", "F"] },
-                      { $eq: ["$category.segment", "O"] },
-                      { $eq: ["$category.segment", "FO"] },
-                    ],
-                  },
-                ],
-              },
-              then: "D",
-              else: {
-                $cond: {
-                  if: {
-                    $and: [{ $eq: ["$client_services.product_type", "2"] }],
-                  },
-                  then: "I",
-                  else: {
-                    $cond: {
-                      if: {
-                        $and: [{ $eq: ["$client_services.product_type", "3"] }],
-                      },
-                      then: "BO",
-                      else: {
-                        $cond: {
-                          if: {
-                            $and: [
-                              { $eq: ["$client_services.product_type", "4"] },
-                            ],
-                          },
-                          then: "CO",
-                          else: "D",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
+  //         product: {
+  //           $cond: {
+  //             if: {
+  //               $and: [
+  //                 { $eq: ["$client_services.product_type", "1"] },
+  //                 {
+  //                   $or: [
+  //                     { $eq: ["$category.segment", "F"] },
+  //                     { $eq: ["$category.segment", "O"] },
+  //                     { $eq: ["$category.segment", "FO"] },
+  //                   ],
+  //                 },
+  //               ],
+  //             },
+  //             then: "D",
+  //             else: {
+  //               $cond: {
+  //                 if: {
+  //                   $and: [{ $eq: ["$client_services.product_type", "2"] }],
+  //                 },
+  //                 then: "I",
+  //                 else: {
+  //                   $cond: {
+  //                     if: {
+  //                       $and: [{ $eq: ["$client_services.product_type", "3"] }],
+  //                     },
+  //                     then: "BO",
+  //                     else: {
+  //                       $cond: {
+  //                         if: {
+  //                           $and: [
+  //                             { $eq: ["$client_services.product_type", "4"] },
+  //                           ],
+  //                         },
+  //                         then: "CO",
+  //                         else: "D",
+  //                       },
+  //                     },
+  //                   },
+  //                 },
+  //               },
+  //             },
+  //           },
+  //         },
 
-          validity: "DAY",
-          price: "0",
+  //         validity: "DAY",
+  //         price: "0",
 
-          // symbol id token condition here
-          instrument_token: "",
+  //         // symbol id token condition here
+  //         instrument_token: "",
 
-          // ordertype code condition here
-          order_type: {
-            $cond: {
-              if: {
-                $and: [{ $eq: ["$client_services.order_type", "1"] }],
-              },
-              then: "MARKET",
-              else: {
-                $cond: {
-                  if: {
-                    $and: [{ $eq: ["$client_services.order_type", "2"] }],
-                  },
-                  then: "LIMIT",
-                  else: {
-                    $cond: {
-                      if: {
-                        $and: [{ $eq: ["$client_services.order_type", "3"] }],
-                      },
-                      then: "SL",
-                      else: {
-                        $cond: {
-                          if: {
-                            $and: [{ $eq: ["$client_services.order_type", "4"] }],
-                          },
-                          then: "SL-M",
+  //         // ordertype code condition here
+  //         order_type: {
+  //           $cond: {
+  //             if: {
+  //               $and: [{ $eq: ["$client_services.order_type", "1"] }],
+  //             },
+  //             then: "MARKET",
+  //             else: {
+  //               $cond: {
+  //                 if: {
+  //                   $and: [{ $eq: ["$client_services.order_type", "2"] }],
+  //                 },
+  //                 then: "LIMIT",
+  //                 else: {
+  //                   $cond: {
+  //                     if: {
+  //                       $and: [{ $eq: ["$client_services.order_type", "3"] }],
+  //                     },
+  //                     then: "SL",
+  //                     else: {
+  //                       $cond: {
+  //                         if: {
+  //                           $and: [{ $eq: ["$client_services.order_type", "4"] }],
+  //                         },
+  //                         then: "SL-M",
 
-                          //All condition exist
-                          else: "MARKET",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
+  //                         //All condition exist
+  //                         else: "MARKET",
+  //                       },
+  //                     },
+  //                   },
+  //                 },
+  //               },
+  //             },
+  //           },
+  //         },
 
-          transaction_type: "BUY",
+  //         transaction_type: "BUY",
 
-          disclosed_quantity: 0,
+  //         disclosed_quantity: 0,
 
-          trigger_price: 0,
+  //         trigger_price: 0,
 
-          is_amo: false,
-        },
-      },
-    },
-  ]);
+  //         is_amo: false,
+  //       },
+  //     },
+  //   },
+  // ]);

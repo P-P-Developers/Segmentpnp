@@ -387,12 +387,8 @@ class Employee {
             var EmailData = await firstOptPass(email_data);
             CommonEmail(toEmail, subjectEmail, EmailData);
 
-            logger1.info("Add User By Admin", {
-              Email: data[0].Email,
-              role: data[0].Role,
-              user_id: data[0]._id,
-            });
-            res.send({ status: true, msg: "successfully Add!", data: data[0] });
+      
+            return res.send({ status: true, msg: "successfully Add!", data: data[0] });
           }
         })
         .catch((err) => {
@@ -1524,11 +1520,7 @@ class Employee {
 
       var DeleteUser = await User_model.deleteOne({ _id: get_user[0]._id });
 
-      logger1.info(`Delete User Successfully`, {
-        Email: get_user[0].Email,
-        role: get_user[0].Role,
-        user_id: get_user[0]._id,
-      });
+
 
       return res.send({
         status: true,
